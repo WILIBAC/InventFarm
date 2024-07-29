@@ -36,6 +36,12 @@
             </div>
             <div  
                  class="form-group">
+                <label asp-for="Lote" class="control-label"></label>
+                <input asp-for="Lote" class="form-control" />
+                <span asp-validation-for="Lote" class="text-danger"></span>
+            </div>
+            <div  
+                 class="form-group">
                 <label asp-for="Saldo" class="control-label"></label>
                 <input asp-for="Saldo" class="form-control" />
                 <span asp-validation-for="Saldo" class="text-danger"></span>
@@ -45,8 +51,10 @@
                 <select asp-for="CategoriaId" class="form-control" asp-items="@(ViewData["CategoriaId"] as SelectList)"></select>
                 <span asp-validation-for="CategoriaId" class="text-danger"></span>
             </div>
+            <p></p>
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
             </div>
         </form>
     </div>

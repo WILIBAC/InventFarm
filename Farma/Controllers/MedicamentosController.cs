@@ -126,7 +126,6 @@ namespace Farma.Controllers
             }
 
             var medicamento = await _context.Medicamentos
-
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (medicamento == null)
             {
@@ -147,11 +146,11 @@ namespace Farma.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MedicamentoExists(int id)
-        {
-            return _context.Medicamentos.Any(e
-            => e.Id == id);
-        }
+        //private bool MedicamentoExists(int id)
+        //{
+        //    return _context.Medicamentos.Any(e
+        //    => e.Id == id);
+        //}
 
         // Método para obtener los medicamentos próximos a vencer
         public async Task<IActionResult> ProximosAVencer(int meses)

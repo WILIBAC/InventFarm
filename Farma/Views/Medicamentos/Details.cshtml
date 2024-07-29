@@ -1,0 +1,45 @@
+﻿@model Farma.Models.Medicamento
+
+@{
+    ViewData["Title"] = "Detalle del Medicamento";
+}
+
+<h1>Detalle del Medicamento</h1>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Nombre)</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaVencimiento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FechaVencimiento)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Saldo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Saldo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Categoria)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Categoria.Nombre)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @*<a asp-action="Edit" asp-route-id="@model.Id">Editar</a> |
+    <a asp-action="Delete" asp-route-id="@model.Id">Eliminar</a>*@
+</div>
+
+

@@ -1,0 +1,21 @@
+﻿@model Farma.Models.Medicamento
+
+@{
+    ViewData["Title"] = "Eliminar Medicamento";
+}
+
+<h2>Eliminar</h2>
+
+<h3>Estás a punto de eliminar el medicamento "@Model.Nombre". ¿Estás seguro?</h3>
+<div>
+    <h4>Medicamento</h4>
+    <hr />
+    <dl class="row">
+    </dl>
+</div>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+    <a asp-action="Index">Volver a la Lista</a>
+</form>
+

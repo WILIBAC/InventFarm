@@ -1,0 +1,69 @@
+﻿@model Farma.Models.Medicamento
+
+@{
+    ViewData["Title"] = "Crear Medicamento";
+}
+
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning" role="alert">
+        @TempData["WarningMessage"]
+    </div>
+}
+
+<h1>Crear Medicamento</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span  
+                      asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+
+                <textarea asp-for="Descripcion" class="form-control"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaVencimiento" class="control-label"></label>
+                <input asp-for="FechaVencimiento" class="form-control"   />
+                <span asp-validation-for="FechaVencimiento" class="text-danger"></span>
+            </div>
+            <div  
+                 class="form-group">
+                <label asp-for="Saldo" class="control-label"></label>
+                <input asp-for="Saldo" class="form-control" />
+                <span asp-validation-for="Saldo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoriaId" class="control-label"></label>
+                <select asp-for="CategoriaId" class="form-control" asp-items="@(ViewData["CategoriaId"] as SelectList)"></select>
+                <span asp-validation-for="CategoriaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }  
+
+    <script>
+        $(document).ready(function () {
+            var warningMessage = '@TempData["WarningMessage"]';
+            if (warningMessage) {
+                alert(warningMessage);
+            }
+        });
+    </script>
+}

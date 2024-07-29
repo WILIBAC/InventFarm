@@ -1,0 +1,100 @@
+﻿@* @model IEnumerable<Farma.Models.Medicamento>
+
+@{
+    ViewData["Title"] = "Medicamentos Próximos a Vencer";
+}
+
+<h2>Medicamentos Próximos a Vencer</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Saldo</th>
+            <th>Categoría</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descripción)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.FechaVencimiento)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.Saldo)</td>
+                <td>@Html.DisplayFor(modelItem => item.Categoria.Nombre)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@
+
+ @model IEnumerable<Farma.Models.Medicamento>
+
+@{
+    ViewData["Title"] = "Medicamentos Próximos a Vencer";
+}
+
+<h1>Medicamentos Próximos a Vencer</h1>
+
+<form asp-action="ProximosAVencer" method="get">
+    <div class="form-group">
+        <label for="meses">Meses:</label>
+        <input type="number" name="meses" id="meses" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Buscar Medicamentos Próximos a Vencer" class="btn btn-primary" />
+    </div>
+</form>
+
+<p>
+    <a asp-action="Index">Volver a la lista de medicamentos</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaVencimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Saldo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria.Nombre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaVencimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Saldo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nombre)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Farma.Models.Medicamento>
+
+@{
+    ViewData["Title"] = "Lista de Medicamentos";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+else if (TempData["SuccesMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccesMessage"]
+    </div>
+}
+
+<h2>Lista de Medicamentos</h2>
+
+<p>
+    <a asp-action="Create">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Saldo</th>
+            <th>Categoría</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaVencimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Saldo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nombre)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    
+    <script>
+        $(document).ready(function () {
+            var errorMessage = '@TempData["ErrorMessage"]';
+            var succesMessage = '@TempData["SuccesMessage"]';
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+            else if(succesMessage)
+            {
+                alert(succesMessage);
+            }
+        });
+    </script>
+}

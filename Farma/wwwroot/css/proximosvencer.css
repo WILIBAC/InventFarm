@@ -1,0 +1,22 @@
+﻿body {
+}
+
+.vencido {
+    background-color: #FF3333;
+    color: white;
+}
+
+.proximo {
+    background-color: #FFCCBC;
+    color: black;
+}
+
+.pronto {
+    background-color: #FFF9C4;
+    color: black;
+}
+
+.vigente {
+    background-color: #669966;
+    color: white;
+}

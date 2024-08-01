@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.X86;
 using Farma.Data;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Farma.Controllers
 {
     public class MedicamentosController : Controller
     {
         private readonly FarmaciaDbContext _context;
+        private readonly IHubContext<MedicamentosHub> _hubContext;
 
-        public MedicamentosController(FarmaciaDbContext context)
+        public MedicamentosController(FarmaciaDbContext context, IHubContext<MedicamentosHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: Medicamentos
@@ -67,6 +70,9 @@ namespace Farma.Controllers
                 }
                 _context.Add(medicamento);
                 await _context.SaveChangesAsync();
+                // Notificar a los clientes conectados sobre el cambio
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento creado");
+
                 TempData["SuccesMessage"] = $"Se ha agregado el {medicamento.Nombre} con éxito";
                 return RedirectToAction(nameof(Index));
             }
@@ -104,6 +110,8 @@ namespace Farma.Controllers
                 {
                     _context.Update(medicamento);
                     await _context.SaveChangesAsync();
+                    // Notificar a los clientes conectados sobre el cambio
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento editado");
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -142,6 +150,9 @@ namespace Farma.Controllers
             var medicamento = await _context.Medicamentos.FindAsync(id);
             _context.Medicamentos.Remove(medicamento);
             await _context.SaveChangesAsync();
+            // Notificar a los clientes conectados sobre el cambio
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento eliminado");
+
             TempData["SuccesMessage"] = $"El elemento {medicamento.Nombre} ha sido eliminado";
             return RedirectToAction(nameof(Index));
         }

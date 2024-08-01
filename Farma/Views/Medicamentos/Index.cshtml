@@ -81,4 +81,27 @@ else if (TempData["SuccesMessage"] != null)
             }
         });
     </script>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.0/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/medicamentosHub")
+            .build();
+
+        connection.on("ReceiveMessage", (user, message) => {
+            console.log("Mensaje recibido: ", message);
+            alert("Mensaje recibido: " + message);  // Agrega un alert para diagnosticar
+            // Aquí puedes recargar la tabla o actualizar los datos de alguna forma
+            location.reload();
+        });
+
+        connection.start()
+            .then(() => console.log('Conectado a SignalR'))
+            .catch(err => console.error('Error al conectar a SignalR:', err.toString()));
+    </script>
+
 }

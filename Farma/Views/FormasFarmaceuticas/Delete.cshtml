@@ -1,0 +1,36 @@
+﻿@model Farma.Models.FormaFarmaceutica
+
+@{
+    ViewData["Title"] = "Eliminar Forma Farmacéutica";
+}
+
+<h1>Eliminar Forma Farmacéutica</h1>
+
+<h3>¿Estás seguro que deseas eliminar esta forma farmacéutica?</h3>
+<div>
+    <h4>Forma Farmacéutica</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Nombre
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

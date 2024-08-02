@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farma.Migrations
 {
     [DbContext(typeof(FarmaciaDbContext))]
-    [Migration("20240729214436_MedicamentosAddLoteAndDisplayName")]
-    partial class MedicamentosAddLoteAndDisplayName
+    [Migration("20240802140815_CreateTables")]
+    partial class CreateTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,24 @@ namespace Farma.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("Farma.Models.FormaFarmaceutica", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FormasFarmaceuticas");
+                });
+
             modelBuilder.Entity("Farma.Models.Medicamento", b =>
                 {
                     b.Property<int>("Id")
@@ -52,30 +70,31 @@ namespace Farma.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("FechaVencimiento")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("FormaFarmaceuticaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Lote")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Producto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Saldo")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoriaId");
+
+                    b.HasIndex("FormaFarmaceuticaId");
 
                     b.ToTable("Medicamentos");
                 });
@@ -88,10 +107,23 @@ namespace Farma.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Farma.Models.FormaFarmaceutica", "FormaFarmaceutica")
+                        .WithMany("Medicamentos")
+                        .HasForeignKey("FormaFarmaceuticaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Categoria");
+
+                    b.Navigation("FormaFarmaceutica");
                 });
 
             modelBuilder.Entity("Farma.Models.Categoria", b =>
+                {
+                    b.Navigation("Medicamentos");
+                });
+
+            modelBuilder.Entity("Farma.Models.FormaFarmaceutica", b =>
                 {
                     b.Navigation("Medicamentos");
                 });

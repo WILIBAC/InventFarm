@@ -12,7 +12,8 @@ namespace Farma.Models
         public int Id { get; set; }
         public string Producto { get; set; }
         [Display(Name = "Forma Farmaceutica")]
-        public string FormaFarma { get; set; }
+        public int FormaFarmaceuticaId { get; set; }
+        public FormaFarmaceutica FormaFarmaceutica { get; set; }
         [Display(Name = "Fecha de Vencimiento")]
         public DateTime FechaVencimiento { get; set; }
         public string Lote { get; set; }

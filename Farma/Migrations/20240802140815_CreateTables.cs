@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Farma.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateBDFarma : Migration
+    public partial class CreateTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,15 +25,29 @@ namespace Farma.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FormasFarmaceuticas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormasFarmaceuticas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medicamentos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FormaFarmaceuticaId = table.Column<int>(type: "int", nullable: false),
                     FechaVencimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Saldo = table.Column<int>(type: "int", nullable: false),
+                    Lote = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -45,12 +59,23 @@ namespace Farma.Migrations
                         principalTable: "Categorias",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Medicamentos_FormasFarmaceuticas_FormaFarmaceuticaId",
+                        column: x => x.FormaFarmaceuticaId,
+                        principalTable: "FormasFarmaceuticas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Medicamentos_CategoriaId",
                 table: "Medicamentos",
                 column: "CategoriaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Medicamentos_FormaFarmaceuticaId",
+                table: "Medicamentos",
+                column: "FormaFarmaceuticaId");
         }
 
         /// <inheritdoc />
@@ -61,6 +86,9 @@ namespace Farma.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categorias");
+
+            migrationBuilder.DropTable(
+                name: "FormasFarmaceuticas");
         }
     }
 }

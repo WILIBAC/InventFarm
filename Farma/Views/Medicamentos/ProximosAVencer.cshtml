@@ -26,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.Producto)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FormaFarma)
+                @Html.DisplayNameFor(model => model.FormaFarmaceutica.Nombre)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaVencimiento)
@@ -68,7 +68,7 @@
                     @Html.DisplayFor(modelItem => item.Producto)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FormaFarma)
+                    @Html.DisplayFor(modelItem => item.FormaFarmaceutica.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FechaVencimiento)

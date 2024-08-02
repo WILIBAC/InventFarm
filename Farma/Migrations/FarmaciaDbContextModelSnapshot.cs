@@ -40,6 +40,24 @@ namespace Farma.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("Farma.Models.FormaFarmaceutica", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FormasFarmaceuticas");
+                });
+
             modelBuilder.Entity("Farma.Models.Medicamento", b =>
                 {
                     b.Property<int>("Id")
@@ -58,9 +76,8 @@ namespace Farma.Migrations
                     b.Property<DateTime>("FechaVencimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FormaFarma")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FormaFarmaceuticaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Lote")
                         .IsRequired()
@@ -74,6 +91,8 @@ namespace Farma.Migrations
 
                     b.HasIndex("CategoriaId");
 
+                    b.HasIndex("FormaFarmaceuticaId");
+
                     b.ToTable("Medicamentos");
                 });
 
@@ -85,10 +104,23 @@ namespace Farma.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Farma.Models.FormaFarmaceutica", "FormaFarmaceutica")
+                        .WithMany("Medicamentos")
+                        .HasForeignKey("FormaFarmaceuticaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Categoria");
+
+                    b.Navigation("FormaFarmaceutica");
                 });
 
             modelBuilder.Entity("Farma.Models.Categoria", b =>
+                {
+                    b.Navigation("Medicamentos");
+                });
+
+            modelBuilder.Entity("Farma.Models.FormaFarmaceutica", b =>
                 {
                     b.Navigation("Medicamentos");
                 });

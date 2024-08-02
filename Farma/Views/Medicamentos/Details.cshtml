@@ -7,14 +7,14 @@
 <h1>Detalle del Medicamento</h1>
 
 <div>
-    <h4>@Html.DisplayFor(model => model.Nombre)</h4>
+    <h4>@Html.DisplayFor(model => model.Producto)</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
+            @Html.DisplayNameFor(model => model.FormaFarma)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
+            @Html.DisplayFor(model => model.FormaFarma)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaVencimiento)
@@ -29,10 +29,10 @@
             @Html.DisplayFor(model => model.Lote)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Saldo)
+            @Html.DisplayNameFor(model => model.Cantidad)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Saldo)
+            @Html.DisplayFor(model => model.Cantidad)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Categoria)

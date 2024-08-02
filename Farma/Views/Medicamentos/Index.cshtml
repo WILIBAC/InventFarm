@@ -25,11 +25,11 @@ else if (TempData["SuccesMessage"] != null)
 <table class="table">
     <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
+            <th>Producto</th>
+            <th>Forma Farmaceutica</th>
             <th>Fecha de Vencimiento</th>
             <th>Lote</th>
-            <th>Saldo</th>
+            <th>Cantidad</th>
             <th>Categoría</th>
             <th></th>
         </tr>
@@ -39,10 +39,10 @@ else if (TempData["SuccesMessage"] != null)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
+                    @Html.DisplayFor(modelItem => item.Producto)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
+                    @Html.DisplayFor(modelItem => item.FormaFarma)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FechaVencimiento)
@@ -51,7 +51,7 @@ else if (TempData["SuccesMessage"] != null)
                     @Html.DisplayFor(modelItem => item.Lote)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Saldo)
+                    @Html.DisplayFor(modelItem => item.Cantidad)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.Nombre)

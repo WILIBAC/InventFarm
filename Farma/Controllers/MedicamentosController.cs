@@ -73,11 +73,11 @@ namespace Farma.Controllers
                 // Notificar a los clientes conectados sobre el cambio
                 await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento creado");
 
-                TempData["SuccesMessage"] = $"Se ha agregado el {medicamento.Nombre} con éxito";
+                TempData["SuccesMessage"] = $"Se ha agregado el {medicamento.Producto} con éxito";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", medicamento.CategoriaId);
-            TempData["ErrorMessage"] = $"No se ha agregado el {medicamento.Nombre} con éxito";
+            TempData["ErrorMessage"] = $"No se ha agregado el {medicamento.Producto} con éxito";
             return View(medicamento);
         }
 
@@ -153,7 +153,7 @@ namespace Farma.Controllers
             // Notificar a los clientes conectados sobre el cambio
             await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento eliminado");
 
-            TempData["SuccesMessage"] = $"El elemento {medicamento.Nombre} ha sido eliminado";
+            TempData["SuccesMessage"] = $"El elemento {medicamento.Producto} ha sido eliminado";
             return RedirectToAction(nameof(Index));
         }
 

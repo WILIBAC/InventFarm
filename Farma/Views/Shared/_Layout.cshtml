@@ -23,16 +23,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Medicamentos" asp-action="Index">Medicamentos</a>
+                            <a class="nav-link" asp-area="" asp-controller="Medicamentos" asp-action="Index">Medicamentos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
+                            <a class="nav-link" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="FormasFarmaceuticas" asp-action="Index">Formas Farmaceuticas</a>
+                            <a class="nav-link" asp-area="" asp-controller="FormasFarmaceuticas" asp-action="Index">Formas Farmaceuticas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Medicamentos" asp-action="ListaSimple">Lista de Medicamentos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Medicamentos" asp-action="ProximosAVencer">Proximos A Vencer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Medicamentos" asp-action="SinStock">Medicamentos Sin Stock</a>
                         </li>
                     </ul>
                 </div>

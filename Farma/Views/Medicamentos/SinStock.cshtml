@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Farma.Models.Medicamento>
+
+@{
+    ViewData["Title"] = "Medicamentos Sin Stock";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+else if (TempData["SuccesMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccesMessage"]
+    </div>
+}
+
+<h2>Medicamentos Sin Stock</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Forma Farmaceutica</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Lote</th>
+            <th>Cantidad</th>
+            <th>Categoría</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FormaFarmaceutica.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaVencimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lote)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nombre)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="ProximosAVencer" class="btn btn-secondary">Próximos a vencer</a>
+    <a asp-action="ListaSimple" class="btn btn-secondary">Lista Completa</a>
+</p>
+

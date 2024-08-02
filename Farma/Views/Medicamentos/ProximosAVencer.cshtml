@@ -15,7 +15,6 @@
     <p></p>
     <div class="form-group">
         <input type="submit" value="Buscar Medicamentos Próximos a Vencer" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
     </div>
 </form>
 
@@ -86,6 +85,11 @@
         }
     </tbody>
 </table>
+
+<p>
+    <a asp-action="SinStock" class="btn btn-secondary">Medicamentos sin stock</a>
+    <a asp-action="ListaSimple" class="btn btn-secondary">Lista Completa</a>
+</p>
 
 @section Scripts {
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>

@@ -183,5 +183,25 @@ namespace Farma.Controllers
 
             return View(proximosAVencer);
         }
+
+        public async Task<IActionResult> SinStock()
+        {
+            var medicamentosSinStock = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.FormaFarmaceutica)  // Incluye la relación con FormaFarmaceutica si es necesaria
+                .Where(m => m.Cantidad == 0)
+                .ToListAsync();
+
+            return View(medicamentosSinStock);
+        }
+        public async Task<IActionResult> ListaSimple()
+        {
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.FormaFarmaceutica)
+                .ToListAsync();
+
+            return View(medicamentos);
+        }
     }
 }

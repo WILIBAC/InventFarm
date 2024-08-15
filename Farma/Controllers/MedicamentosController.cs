@@ -4,22 +4,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.X86;
 using Farma.Data;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Farma.Controllers
 {
     public class MedicamentosController : Controller
     {
         private readonly FarmaciaDbContext _context;
+        private readonly IHubContext<MedicamentosHub> _hubContext;
 
-        public MedicamentosController(FarmaciaDbContext context)
+        public MedicamentosController(FarmaciaDbContext context, IHubContext<MedicamentosHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: Medicamentos
         public async Task<IActionResult> Index()
         {
-            var medicamentos = await _context.Medicamentos.Include(m => m.Categoria).ToListAsync();
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.FormaFarmaceutica) // Incluir la propiedad FormaFarmaceutica
+                .ToListAsync();
             //return View(await _context.Medicamentos.ToListAsync());
             return View(medicamentos);
         }
@@ -35,6 +41,7 @@ namespace Farma.Controllers
 
             var medicamento = await _context.Medicamentos
                 .Include(m => m.Categoria)
+                .Include(m => m.FormaFarmaceutica)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (medicamento == null)
             {
@@ -50,6 +57,7 @@ namespace Farma.Controllers
 
         {
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre");
+            ViewData["FormaFarmaceuticaId"] = new SelectList(_context.FormasFarmaceuticas, "Id", "Nombre");
             return View();
         }
 
@@ -57,21 +65,27 @@ namespace Farma.Controllers
         public async Task<IActionResult> Create(Medicamento medicamento)
         {
             ModelState.Remove(nameof(Medicamento.Categoria));
+            ModelState.Remove(nameof(Medicamento.FormaFarmaceutica));
             if (ModelState.IsValid)
             {
                 if(medicamento.FechaVencimiento <= DateTime.Now)
                 {
                     TempData["WarningMessage"] = "la fecha de vencimiento tiene que ser superior a la fecha de hoy!";
                     ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre");
+                    ViewData["FormaFarmaceuticaId"] = new SelectList(_context.FormasFarmaceuticas, "Id", "Nombre", medicamento.FormaFarmaceuticaId);
                     return View();
                 }
                 _context.Add(medicamento);
                 await _context.SaveChangesAsync();
-                TempData["SuccesMessage"] = $"Se ha agregado el {medicamento.Nombre} con éxito";
+                // Notificar a los clientes conectados sobre el cambio
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento creado");
+
+                TempData["SuccesMessage"] = $"Se ha agregado el {medicamento.Producto} con éxito";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", medicamento.CategoriaId);
-            TempData["ErrorMessage"] = $"No se ha agregado el {medicamento.Nombre} con éxito";
+            ViewData["FormaFarmaceuticaId"] = new SelectList(_context.FormasFarmaceuticas, "Id", "Nombre", medicamento.FormaFarmaceuticaId);
+            TempData["ErrorMessage"] = $"No se ha agregado el {medicamento.Producto} con éxito";
             return View(medicamento);
         }
 
@@ -91,6 +105,7 @@ namespace Farma.Controllers
 
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", medicamento.CategoriaId);
+            ViewData["FormaFarmaceuticaId"] = new SelectList(_context.FormasFarmaceuticas, "Id", "Nombre", medicamento.FormaFarmaceuticaId);
             return View(medicamento);
         }
 
@@ -98,12 +113,15 @@ namespace Farma.Controllers
         public async Task<IActionResult> Edit(Medicamento medicamento)
         {
             ModelState.Remove(nameof(Medicamento.Categoria));
+            ModelState.Remove(nameof(Medicamento.FormaFarmaceutica));
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(medicamento);
                     await _context.SaveChangesAsync();
+                    // Notificar a los clientes conectados sobre el cambio
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento editado");
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -114,6 +132,7 @@ namespace Farma.Controllers
             }
 
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre", medicamento.CategoriaId);
+            ViewData["FormaFarmaceuticaId"] = new SelectList(_context.FormasFarmaceuticas, "Id", "Nombre", medicamento.FormaFarmaceuticaId);
             return View(medicamento);
         }
 
@@ -126,7 +145,6 @@ namespace Farma.Controllers
             }
 
             var medicamento = await _context.Medicamentos
-
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (medicamento == null)
             {
@@ -143,14 +161,11 @@ namespace Farma.Controllers
             var medicamento = await _context.Medicamentos.FindAsync(id);
             _context.Medicamentos.Remove(medicamento);
             await _context.SaveChangesAsync();
-            TempData["SuccesMessage"] = $"El elemento {medicamento.Nombre} ha sido eliminado";
-            return RedirectToAction(nameof(Index));
-        }
+            // Notificar a los clientes conectados sobre el cambio
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", "update", "Medicamento eliminado");
 
-        private bool MedicamentoExists(int id)
-        {
-            return _context.Medicamentos.Any(e
-            => e.Id == id);
+            TempData["SuccesMessage"] = $"El elemento {medicamento.Producto} ha sido eliminado";
+            return RedirectToAction(nameof(Index));
         }
 
         // Método para obtener los medicamentos próximos a vencer
@@ -162,10 +177,31 @@ namespace Farma.Controllers
             // Filtrar los medicamentos que vencen antes de la fecha límite
             var proximosAVencer = await _context.Medicamentos
                                                 .Include(m => m.Categoria)
+                                                .Include(m => m.FormaFarmaceutica)
                                                 .Where(m => m.FechaVencimiento <= fechaLimite)
                                                 .ToListAsync();
 
             return View(proximosAVencer);
+        }
+
+        public async Task<IActionResult> SinStock()
+        {
+            var medicamentosSinStock = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.FormaFarmaceutica)  // Incluye la relación con FormaFarmaceutica si es necesaria
+                .Where(m => m.Cantidad == 0)
+                .ToListAsync();
+
+            return View(medicamentosSinStock);
+        }
+        public async Task<IActionResult> ListaSimple()
+        {
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.FormaFarmaceutica)
+                .ToListAsync();
+
+            return View(medicamentos);
         }
     }
 }

@@ -1,17 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Farma.Models
 {
-    [Table("Categorias")]
-    public class Categoria
+    [Table("FormasFarmaceuticas")]
+    public class FormaFarmaceutica
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("Id")]
         public int Id { get; set; }
-        [Display(Name = "Categoría")]
+
+        [Display(Name = "Forma Farmacéutica")]
         public string Nombre { get; set; }
+
         public ICollection<Medicamento> Medicamentos { get; set; }
     }
 }
+

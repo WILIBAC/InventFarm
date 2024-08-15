@@ -10,11 +10,15 @@ namespace Farma.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("Id")]
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public string Producto { get; set; }
+        [Display(Name = "Forma Farmaceutica")]
+        public int FormaFarmaceuticaId { get; set; }
+        public FormaFarmaceutica FormaFarmaceutica { get; set; }
+        [Display(Name = "Fecha de Vencimiento")]
         public DateTime FechaVencimiento { get; set; }
-        public int Saldo { get; set; }
-
+        public string Lote { get; set; }
+        public int Cantidad { get; set; }
+        [Display(Name = "Categoría")]
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
 

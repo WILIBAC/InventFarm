@@ -17,11 +17,8 @@ else if (TempData["SuccesMessage"] != null)
     </div>
 }
 
-<h2>Lista de Medicamentos</h2>
+<h2>Lista Simple de Medicamentos</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +28,6 @@ else if (TempData["SuccesMessage"] != null)
             <th>Lote</th>
             <th>Cantidad</th>
             <th>Categoría</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -56,18 +52,18 @@ else if (TempData["SuccesMessage"] != null)
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.Nombre)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalles</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
-                </td>
             </tr>
         }
     </tbody>
 </table>
 
+<p>
+    <a asp-action="SinStock" class="btn btn-secondary">Medicamentos sin stock</a>
+    <a asp-action="ProximosAVencer" class="btn btn-secondary">Próximos a vencer</a>
+</p>
+
 @section Scripts {
-    
+
     <script>
         $(document).ready(function () {
             var errorMessage = '@TempData["ErrorMessage"]';
@@ -75,8 +71,7 @@ else if (TempData["SuccesMessage"] != null)
             if (errorMessage) {
                 alert(errorMessage);
             }
-            else if(succesMessage)
-            {
+            else if (succesMessage) {
                 alert(succesMessage);
             }
         });

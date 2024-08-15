@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Farma.styles.css" asp-append-version="true" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.0/signalr.min.js"></script>
+
 </head>
 <body>
     <header>
@@ -20,10 +23,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Medicamentos" asp-action="Index">Medicamentos</a>
+                            <a class="nav-link" asp-area="" asp-controller="Medicamentos" asp-action="Index">Medicamentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="FormasFarmaceuticas" asp-action="Index">Formas Farmaceuticas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Medicamentos" asp-action="ListaSimple">Lista de Medicamentos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Medicamentos" asp-action="ProximosAVencer">Proximos A Vencer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Medicamentos" asp-action="SinStock">Medicamentos Sin Stock</a>
                         </li>
                     </ul>
                 </div>
@@ -36,14 +51,22 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - Farma - <a asp-area="" asp-controller="Medicamentos" asp-action="Create">Create</a>
         </div>
-    </footer>
+    </footer> *@
+    <div class="border-top footer text-muted">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - InventFarm</p>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/proximosvencer.css" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
